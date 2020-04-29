@@ -1,0 +1,16 @@
+title 0.6_spa_new_note
+
+note over browser:
+on submit (save) button
+executes onsubmit event handler
+appends new note to existing list of notes
+redraws notes
+end note
+
+browser->server: HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note_spa
+server->browser: {"message":"note created"}
+
+note over browser:
+logs response to console
+end note
+

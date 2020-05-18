@@ -12,10 +12,7 @@ const update = (id, person) => {
   return request.then(response => response.data);
 };
 
-const remove = id => {
-  const request = axios.delete(`${baseUrl}/${id}`);
-  return request.then(response => response.data);
-};
+const remove = id => axios.delete(`${baseUrl}/${id}`);
 
 export default {
   save,

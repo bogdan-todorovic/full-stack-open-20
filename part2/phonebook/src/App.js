@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 
 import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
@@ -16,9 +15,9 @@ const App = () => {
   const [notification, setNotification] = useState(null);
 
   useEffect(() => {
-    axios
-      .get("http://localhost:3001/persons")
-      .then(response => setPersons(response.data))
+    personsService
+      .getAll()
+      .then(persons => setPersons(persons));
   }, []);
 
   const personsToShow = search 
@@ -53,7 +52,7 @@ const App = () => {
             .catch(error => {
               setNotification({
                 type: "error",
-                message: `Information of ${changedPerson.name} has already been removed.`
+                message: error.response.data.error
               });
               setTimeout(() => setNotification(null), 5000);
             });
@@ -73,6 +72,13 @@ const App = () => {
           setNotification({
             type: "success",
             message: `Person ${addedPerson.name} successfully added.`
+          });
+          setTimeout(() => setNotification(null), 5000);
+        })
+        .catch(error => {
+          setNotification({
+            type: "error",
+            message: error.response.data.error
           });
           setTimeout(() => setNotification(null), 5000);
         });

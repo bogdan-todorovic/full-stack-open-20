@@ -27,7 +27,10 @@ const App = () => {
   useEffect(() => {
     blogService
       .getAll()
-      .then(returnedBlogs => setBlogs(returnedBlogs));
+      .then(returnedBlogs => {
+        const sortedBlogs = returnedBlogs.sort(blogService.compareBlogs);
+        setBlogs(sortedBlogs);
+      });
   }, [user]);
 
   const onUsernameChange = newUsername => setUsername(newUsername);
@@ -45,7 +48,7 @@ const App = () => {
         blogService.setToken(response.token);
         window.localStorage.setItem("user", JSON.stringify(response));
       })
-      .catch(err => {
+      .catch(() => {
         setNotification("Invalid username or password");
         setTimeout(() => {
           setNotification("");
@@ -79,11 +82,21 @@ const App = () => {
       });
   };
 
+  const likeBlog = blog => {
+    const updatedBlog = {
+      likes: blog.likes + 1
+    };
+
+    blogService
+      .update(blog.id, updatedBlog)
+      .then(response => setBlogs(blogs.concat(response)));
+  };
+
   return (
     <div>
       {
         user === null
-        ? <LoginForm
+          ? <LoginForm
             username={username}
             changeUsername={onUsernameChange}
             password={password}
@@ -91,7 +104,7 @@ const App = () => {
             loginHandler={handleLogin}
             notification={notification}
           />
-        : <BlogsPage
+          : <BlogsPage
             blogs={blogs}
             user={user.name}
             logout={handleLogout}
@@ -102,6 +115,7 @@ const App = () => {
             url={url}
             changeUrl={onUrlChange}
             create={createNewBlog}
+            handleLike={likeBlog}
             notification={notification}
           />
       }

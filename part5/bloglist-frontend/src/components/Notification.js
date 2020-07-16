@@ -7,16 +7,14 @@ const Notification = ({ message }) => {
     display: "inline-block"
   };
 
-  if (message === "") 
+  if (message === "")
     return null;
-    
+
   return (
     <div style={style}>
       {message}
     </div>
   );
-  
-  
 };
 
 export default Notification;

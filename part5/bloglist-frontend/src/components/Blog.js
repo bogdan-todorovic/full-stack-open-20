@@ -17,6 +17,7 @@ const Blog = ({ blog, handleLike }) => {
         showDetails
           ? <div>
             <p>Author: {blog.author}</p>
+            <p>Url: {blog.url}</p>
             <p>
               Likes: {blog.likes}
               <button onClick={() => addLike()}>like</button>
